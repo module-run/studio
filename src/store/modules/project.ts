@@ -25,7 +25,7 @@ export const projectStore = defineStore("project", {
     }),
     actions: {
         async refreshIfNeed() {
-            if(this.recordsInitialized){
+            if (this.recordsInitialized) {
                 return
             }
             this.recordsInitialized = true
@@ -33,6 +33,10 @@ export const projectStore = defineStore("project", {
         },
         async refresh() {
             this.records = await ProjectService.list()
+            this.refreshUpdateTime()
+        },
+        refreshUpdateTime() {
+            this.records = this.records.sort((a, b) => a.updatedAt > b.updatedAt ? -1 : 1)
         },
         async add(record: ProjectRecord): Promise<ProjectRecord> {
             record = clone(record)
@@ -45,13 +49,26 @@ export const projectStore = defineStore("project", {
             await this.refresh()
             return record
         },
+        async editField(record: ProjectRecord, field: string | null = null, value: string | null = null) {
+            const project = this.getById(record?.id)
+            if (!project) {
+                return
+            }
+            if (field) {
+                project[field] = value
+            }
+            project.updatedAt = Date.now()
+            await ProjectService.edit(project)
+            this.refreshUpdateTime()
+        },
         async edit(record: ProjectRecord) {
-            const project = this.records.find(p => p.id === record.id)
+            const project = this.getById(record.id)
             if (!project) {
                 return
             }
             project.title = record.title
             await ProjectService.edit(project)
+            this.refreshUpdateTime()
         },
         async open(id: string) {
             await this.refreshIfNeed()
@@ -86,6 +103,7 @@ export const projectStore = defineStore("project", {
                 return
             }
             this.current.pipDependencies.push(pip)
+            this.current.updatedAt = Date.now()
             await ProjectService.edit(this.current)
         },
         async deletePipDependency(pip: ProjectPipRecord) {
@@ -96,6 +114,7 @@ export const projectStore = defineStore("project", {
                 return
             }
             this.current.pipDependencies = this.current.pipDependencies.filter(p => p.name !== pip.name)
+            this.current.updatedAt = Date.now()
             await ProjectService.edit(this.current)
         },
         async activeModule(module: ProjectModuleRecord | string | null = null) {
@@ -134,6 +153,7 @@ export const projectStore = defineStore("project", {
             const module = await ProjectService.addModule(this.current)
             await this.loadModules()
             await this.activeModule(module)
+            await this.editField(this.current)
         },
         async deleteModule(module: ProjectModuleRecord | string | null) {
             if (!this.current) {
@@ -150,6 +170,7 @@ export const projectStore = defineStore("project", {
             if (this.currentModuleActive === module.name) {
                 await this.activeModule()
             }
+            await this.editField(this.current)
         },
         async editModuleName(nameOld: string, nameNew: string) {
             if (!this.current) {
@@ -164,6 +185,7 @@ export const projectStore = defineStore("project", {
             await ProjectService.editModuleName(this.current, nameOld, nameNew)
             await this.loadModules()
             await this.activeModule(nameNew)
+            await this.editField(this.current)
         },
         async editModule(module: ProjectModuleRecord) {
             if (!this.current) {
@@ -179,6 +201,7 @@ export const projectStore = defineStore("project", {
             m.logo = module.logo
             m.updatedAt = Date.now()
             await ProjectService.editModule(this.current, m)
+            await this.editField(this.current)
         },
         async editModuleData(data: ProjectModuleDataRecord) {
             if (!this.current || !this.currentModuleActive) {
@@ -187,6 +210,7 @@ export const projectStore = defineStore("project", {
             const module = this.currentModules.find(m => m.name === this.currentModuleActive)
             if (module) {
                 await ProjectService.editModuleData(this.current, module, data)
+                await this.editField(this.current)
             }
         },
         async setDefaultDevice(device: DeviceRecord) {
@@ -196,6 +220,7 @@ export const projectStore = defineStore("project", {
             // console.log('setDefaultDevice', JSON.stringify(device))
             this.current.defaultDevice = device.id as string
             await ProjectService.edit(this.current)
+            await this.editField(this.current)
         },
         async loadExtends() {
             if (!this.current) {
@@ -209,6 +234,7 @@ export const projectStore = defineStore("project", {
             }
             await ProjectService.addExtend(this.current, extend, files)
             await this.loadExtends()
+            await this.editField(this.current)
         },
         async deleteExtend(extend: ProjectExtendRecord) {
             if (!this.current) {
@@ -216,6 +242,7 @@ export const projectStore = defineStore("project", {
             }
             await ProjectService.deleteExtend(this.current, extend)
             await this.loadExtends()
+            await this.editField(this.current)
         }
     }
 })

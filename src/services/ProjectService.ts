@@ -61,8 +61,6 @@ export const ProjectService = {
             ]) as ProjectRecord
             projects.push(project)
         }
-        // order by updatedAt desc
-        projects = projects.sort((a, b) => a.updatedAt > b.updatedAt ? -1 : 1)
         return projects
     },
     async add(project: ProjectRecord): Promise<ProjectRecord> {

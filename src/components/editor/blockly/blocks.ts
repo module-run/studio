@@ -1,6 +1,5 @@
 import * as Blockly from 'blockly';
 import {Order, pythonGenerator} from "blockly/python";
-import {BlocklyColors} from "./theme";
 
 export const DefaultBlocklyToolboxes = [
     {
@@ -17,6 +16,20 @@ export const DefaultBlocklyToolboxes = [
             {
                 kind: 'block',
                 type: 'text',
+            },
+            {
+                kind: 'block',
+                type: 'sleep',
+                inputs: {
+                    VALUE: {
+                        block: {
+                            type: 'text',
+                            fields: {
+                                TEXT: 1,
+                            },
+                        },
+                    },
+                }
             },
             {
                 "kind": "block",
@@ -51,7 +64,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 10,
+                                TEXT: 10,
                             },
                         },
                     },
@@ -72,7 +85,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 1,
+                                TEXT: 1,
                             },
                         },
                     },
@@ -80,7 +93,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 10,
+                                TEXT: 10,
                             },
                         },
                     },
@@ -88,7 +101,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 1,
+                                TEXT: 1,
                             },
                         },
                     },
@@ -149,7 +162,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 1,
+                                TEXT: 1,
                             },
                         },
                     },
@@ -157,7 +170,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 100,
+                                TEXT: 100,
                             },
                         },
                     },
@@ -171,7 +184,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 1,
+                                TEXT: 1,
                             },
                         },
                     },
@@ -179,7 +192,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 100,
+                                TEXT: 100,
                             },
                         },
                     },
@@ -278,7 +291,7 @@ export const DefaultBlocklyToolboxes = [
                         block: {
                             type: 'text',
                             fields: {
-                                NUM: 5,
+                                TEXT: 5,
                             },
                         },
                     },
@@ -432,25 +445,26 @@ export const DefaultBlocklyToolboxes = [
 // })
 // console.log('blocks', JSON.stringify(blocks, null, 2))
 
-// Blockly.defineBlocksWithJsonArray([
-//     {
-//         "type": "input_text_block",
-//         "message0": "字符串%1",
-//         "args0": [
-//             {
-//                 "type": "field_input",
-//                 "name": "VALUE",
-//                 "text": ""
-//             }
-//         ],
-//         "output": "String",
-//         "colour": BlocklyColors.StringColor,
-//         "tooltip": "变量输入块",
-//     },
-// ])
-//
-// let results: any[] = []
-// pythonGenerator.forBlock['input_text_block'] = function (block, generator) {
-//     return [generator.quote_(block.getFieldValue('VALUE')), Order.ATOMIC];
-// }
+Blockly.defineBlocksWithJsonArray([
+    {
+        "type": "sleep",
+        "message0": "延迟 %1 秒",
+        "args0": [
+            {
+                "type": "input_value",
+                "name": "VALUE",
+                "text": ""
+            }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        'style': 'basic_blocks',
+        "tooltip": "延迟指定秒数",
+    },
+])
+
+pythonGenerator.forBlock['sleep'] = function (block, generator) {
+    const value = generator.valueToCode(block, 'VALUE', Order.ATOMIC)
+    return `module_run.sleep(${value})`
+}
 
