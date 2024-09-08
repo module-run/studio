@@ -1,9 +1,5 @@
 import * as Blockly from 'blockly';
 
-export const BlocklyColors = {
-    StringColor: 50,
-}
-
 const theme = Blockly.Theme.defineTheme('mTheme', {
     base: Blockly.Themes.Classic,
     categoryStyles: {

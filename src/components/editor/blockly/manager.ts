@@ -169,6 +169,7 @@ export class BlocklyManager {
 
         let codeBlockIndex = 0
 
+        code.push('import module_run');
         projectStore.currentExtends.forEach(e => {
             code.push(`import extend.${e.name}.main`)
         })
