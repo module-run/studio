@@ -1,0 +1,33 @@
+import {createRouter, createWebHistory} from 'vue-router'
+
+
+const routes = [
+    {
+        path: '/',
+        component: () => import('./layouts/Main.vue'),
+        children: [
+            {path: '', component: () => import('./pages/Login.vue')},
+            {path: 'home', component: () => import('./pages/Home.vue')},
+            {path: 'project', component: () => import('./pages/Project.vue')},
+            {path: 'project_editor', component: () => import('./pages/ProjectEditor.vue')},
+            {path: 'device', component: () => import('./pages/Device.vue')},
+            {path: 'setting', component: () => import('./pages/Setting.vue')},
+            {path: 'about', component: () => import('./pages/About.vue')},
+            {path: 'account', component: () => import('./pages/Account.vue')},
+        ]
+    },
+    {
+        path: '/',
+        component: () => import('./layouts/Raw.vue'),
+        children: [
+            {path: 'login', component: () => import('./pages/Login.vue')},
+        ]
+    },
+]
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes
+})
+
+export default router

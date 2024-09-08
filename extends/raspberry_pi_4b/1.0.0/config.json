@@ -1,0 +1,210 @@
+{
+    "name": "raspberry_pi_4b",
+    "title": "树莓派4B",
+    "version": "1.0.0",
+    "author": "org",
+    "description": "树莓派4B",
+    "logo": "",
+    "require": {
+    },
+    "function": [
+        {
+            "name": "car_move",
+            "title": "小车",
+            "params": [
+                {
+                    "name": "direction",
+                    "title": "向",
+                    "type": "string",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "前",
+                            "value": "2"
+                        },
+                        {
+                            "label": "后",
+                            "value": "0"
+                        },
+                        {
+                            "label": "左",
+                            "value": "3"
+                        },
+                        {
+                            "label": "右",
+                            "value": "1"
+                        }
+                    ],
+                    "defaultValue": "0"
+                },
+                {
+                    "name": "velocity",
+                    "title": "移动",
+                    "type": "number",
+                    "inputType": "number",
+                    "defaultValue": 0,
+                    "min": 0,
+                    "max": 100
+                },
+                {
+                    "name": "unit",
+                    "title": "",
+                    "type": "string",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "毫米/秒",
+                            "value": "0"
+                        },
+                        {
+                            "label": "厘米/秒",
+                            "value": "1"
+                        }
+                    ],
+                    "defaultValue": "0"
+                }
+            ],
+            "paramMultiline": false,
+            "return": null
+        },
+        {
+            "name": "car_turn",
+            "title": "小车",
+            "params": [
+                {
+                    "name": "direction",
+                    "title": "向",
+                    "type": "string",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "左",
+                            "value": "0"
+                        },
+                        {
+                            "label": "右",
+                            "value": "1"
+                        }
+                    ],
+                    "defaultValue": "0"
+                },
+                {
+                    "name": "angular_rate",
+                    "title": "转动",
+                    "type": "number",
+                    "inputType": "number",
+                    "inputLayoutTemplate": "转动{input}度/秒",
+                    "defaultValue": 0,
+                    "min": 0,
+                    "max": 100
+                }
+            ],
+            "paramMultiline": false,
+            "return": null
+        },
+        {
+            "name": "arm_turn",
+            "title": "机械臂",
+            "params": [
+                {
+                    "name": "direction",
+                    "title": "向",
+                    "type": "string",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "前",
+                            "value": "0"
+                        },
+                        {
+                            "label": "后",
+                            "value": "1"
+                        },
+                        {
+                            "label": "左",
+                            "value": "2"
+                        },
+                        {
+                            "label": "右",
+                            "value": "3"
+                        }
+                    ],
+                    "defaultValue": "0"
+                },
+                {
+                    "name": "angle",
+                    "title": "转动",
+                    "type": "number",
+                    "inputType": "number",
+                    "inputLayoutTemplate": "转动{input}度",
+                    "defaultValue": 0,
+                    "min": 0,
+                    "max": 100
+                }
+            ],
+            "paramMultiline": false,
+            "return": null
+        },
+        {
+            "name": "claw_turn",
+            "title": "机械爪",
+            "params": [
+                {
+                    "name": "direction",
+                    "title": "",
+                    "type": "string",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "打开",
+                            "value": "0"
+                        },
+                        {
+                            "label": "收拢",
+                            "value": "1"
+                        }
+                    ],
+                    "defaultValue": "0"
+                },
+                {
+                    "name": "angle",
+                    "title": "",
+                    "type": "number",
+                    "inputType": "number",
+                    "inputLayoutTemplate": "{input}度",
+                    "defaultValue": 0,
+                    "min": 0,
+                    "max": 100
+                }
+            ],
+            "paramMultiline": false,
+            "return": null
+        },
+        {
+            "name": "sleep",
+            "title": "延时",
+            "params": [
+                {
+                    "name": "second",
+                    "title": "延时",
+                    "type": "number",
+                    "inputType": "number",
+                    "inputLayoutTemplate": "{input}秒",
+                    "defaultValue": 0,
+                    "min": 0,
+                    "max": 100
+                }
+            ],
+            "paramMultiline": false,
+            "return": null
+        },
+        {
+            "name": "stop_all_motors",
+            "title": "停止所有电机",
+            "params": [
+            ],
+            "paramMultiline": false,
+            "return": null
+        }
+    ]
+}

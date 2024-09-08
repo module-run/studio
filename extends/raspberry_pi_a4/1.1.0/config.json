@@ -1,0 +1,107 @@
+{
+    "name": "raspberry_pi_a4",
+    "title": "树莓派A4硬件扩展",
+    "version": "1.1.0",
+    "author": "org",
+    "description": "提供树莓派A4硬件扩展，包括设置电机信息和获取电机速度",
+    "logo": "",
+    "require": {
+    },
+    "function": [
+        {
+            "name": "test_function",
+            "title": "测试参数",
+            "params": [
+                {
+                    "name": "aaa",
+                    "title": "文本",
+                    "type": "string",
+                    "inputType": "text",
+                    "defaultValue": "default value"
+                },
+                {
+                    "name": "bbb",
+                    "title": "数字",
+                    "type": "number",
+                    "inputType": "number",
+                    "defaultValue": 0,
+                    "min": 0,
+                    "max": 100
+                },
+                {
+                    "name": "ccc",
+                    "title": "下拉",
+                    "type": "string",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "选项1",
+                            "value": "option1"
+                        },
+                        {
+                            "label": "选项2",
+                            "value": "option2"
+                        }
+                    ],
+                    "defaultValue": "option1"
+                },
+                {
+                    "name": "ddd",
+                    "title": "勾选",
+                    "type": "boolean",
+                    "inputType": "checkbox",
+                    "defaultValue": true
+                },
+                {
+                    "name": "eee",
+                    "title": "角度",
+                    "type": "number",
+                    "inputType": "angle",
+                    "defaultValue": 90
+                }
+            ],
+            "return": null
+        },
+        {
+            "name": "set_motor",
+            "title": "设置电机信息",
+            "params": [
+                {
+                    "name": "direction",
+                    "type": "string",
+                    "title": "方向",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "前进",
+                            "value": "forward"
+                        },
+                        {
+                            "label": "后退",
+                            "value": "backward"
+                        }
+                    ],
+                    "defaultValue": "forward"
+                },
+                {
+                    "name": "speed",
+                    "title": "速度",
+                    "type": "number",
+                    "inputType": "number",
+                    "defaultValue": 0
+                }
+            ],
+            "return": null
+        },
+        {
+            "name": "get_motor_speed",
+            "title": "获取电机速度",
+            "params": [
+            ],
+            "return": {
+                "type": "integer",
+                "title": "电机速度"
+            }
+        }
+    ]
+}

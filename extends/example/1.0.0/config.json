@@ -1,0 +1,68 @@
+{
+    "name": "example",
+    "title": "示例扩展",
+    "version": "1.0.0",
+    "author": "org",
+    "description": "示例扩展",
+    "logo": "",
+    "require": {
+    },
+    "function": [
+        {
+            "name": "test_function",
+            "title": "测试参数",
+            "params": [
+                {
+                    "name": "aaa",
+                    "title": "文本",
+                    "type": "string",
+                    "inputType": "text",
+                    "defaultValue": "default value"
+                },
+                {
+                    "name": "bbb",
+                    "title": "数字",
+                    "type": "number",
+                    "inputType": "number",
+                    "defaultValue": 0,
+                    "min": 0,
+                    "max": 100
+                },
+                {
+                    "name": "ccc",
+                    "title": "下拉",
+                    "type": "string",
+                    "inputType": "select",
+                    "options": [
+                        {
+                            "label": "选项1",
+                            "value": "option1"
+                        },
+                        {
+                            "label": "选项2",
+                            "value": "option2"
+                        }
+                    ],
+                    "defaultValue": "option1"
+                },
+                {
+                    "name": "ddd",
+                    "title": "勾选",
+                    "type": "boolean",
+                    "inputType": "checkbox",
+                    "defaultValue": true
+                },
+                {
+                    "name": "eee",
+                    "title": "角度",
+                    "type": "number",
+                    "inputType": "angle",
+                    "inputLayoutTemplate": "角度{input}度",
+                    "defaultValue": 90
+                }
+            ],
+            "paramMultiline": true,
+            "return": null
+        }
+    ]
+}
