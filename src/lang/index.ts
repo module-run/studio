@@ -5,9 +5,11 @@ import en from './en';
 
 const defaultLocale = 'zh'
 
-window.MAPI.configGet('lang', 'zh').then((lang) => {
-    i18n.global.locale.value = lang
-})
+if (window.$mapi) {
+    window.$mapi.config.get('lang', defaultLocale).then((lang: string) => {
+        i18n.global.locale.value = lang as any
+    })
+}
 
 export let i18n = createI18n({
     locale: defaultLocale,
@@ -48,5 +50,6 @@ export const getLocale = () => {
 
 export const changeLocale = (lang: string) => {
     i18n.global.locale.value = lang as any
-    window.MAPI.configSet('lang', lang)
+    window.$mapi.config.set('lang', lang).then(() => {
+    })
 }

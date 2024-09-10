@@ -1,0 +1,91 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4612660 */
+  src: url('iconfont.woff2?t=1725954136252') format('woff2'),
+       url('iconfont.woff?t=1725954136252') format('woff'),
+       url('iconfont.ttf?t=1725954136252') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-logo:before {
+  content: "\e606";
+}
+
+.icon-avatar:before {
+  content: "\e604";
+}
+
+.icon-extend:before {
+  content: "\e6dd";
+}
+
+.icon-pip:before {
+  content: "\ec66";
+}
+
+.icon-module:before {
+  content: "\e605";
+}
+
+.icon-empty-box:before {
+  content: "\e620";
+}
+
+.icon-store-add:before {
+  content: "\e8eb";
+}
+
+.icon-github:before {
+  content: "\e732";
+}
+
+.icon-gitee:before {
+  content: "\e601";
+}
+
+.icon-control:before {
+  content: "\e6d6";
+}
+
+.icon-shengyin:before {
+  content: "\e8b8";
+}
+
+.icon-assessment-blue:before {
+  content: "\e600";
+}
+
+.icon-shijianpeizhi:before {
+  content: "\e603";
+}
+
+.icon-bianliang:before {
+  content: "\ee48";
+}
+
+.icon-scratch:before {
+  content: "\e602";
+}
+
+.icon-python:before {
+  content: "\e891";
+}
+
+.icon-close:before {
+  content: "\e61b";
+}
+
+.icon-min:before {
+  content: "\e67a";
+}
+
+.icon-max:before {
+  content: "\e665";
+}
+

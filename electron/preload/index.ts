@@ -1,8 +1,14 @@
 import {ipcRenderer, contextBridge} from 'electron'
-import ApiManagerRender from "./../lib/api-manager-render";
+import {MAPI} from "../mapi/renderer";
 
-const apiManage = new ApiManagerRender()
-contextBridge.exposeInMainWorld('MAPI', apiManage.getPreloadApi(ipcRenderer))
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+
+MAPI.init()
+ipcRenderer.on('MAIN_PROCESS_MESSAGE', (_event: any, payload: any) => {
+    if ('APP_READY' === payload.type) {
+        MAPI.init(payload.data)
+    }
+})
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {

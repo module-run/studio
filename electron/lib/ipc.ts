@@ -6,7 +6,7 @@ export const IPC = {
         IPC.win = win
     },
     send: (type: string, data: any = {}) => {
-        IPC.win?.webContents.send('main-process-message', {
+        IPC.win?.webContents.send('MAIN_PROCESS_MESSAGE', {
             type, data
         })
     }

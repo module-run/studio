@@ -9,7 +9,7 @@ declare module '*.vue' {
 
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
-        $mapi: typeof window.MAPI,
+        $mapi: typeof window.$mapi,
         $dialog: typeof Dialog,
     }
 }

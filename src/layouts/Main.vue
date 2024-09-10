@@ -7,7 +7,7 @@ import {Dialog} from "./../lib/dialog";
 const doQuit = () => {
     Dialog.confirm('确定退出吗？')
         .then(() => {
-            window.MAPI.appQuit()
+            window.$mapi.app.quit()
         })
 }
 
@@ -28,11 +28,11 @@ onMounted(() => {
             </div>
             <div class="p-1 leading-4">
                 <div class="inline-block w-6 h-6 leading-6 cursor-pointer hover:text-primary mr-1"
-                     @click="$mapi.windowMin">
+                     @click="$mapi.app.windowMin">
                     <i class="iconfont text-sm icon-min"></i>
                 </div>
                 <div class="inline-block w-6 h-6 leading-6 cursor-pointer hover:text-primary mr-1"
-                     @click="$mapi.windowMax">
+                     @click="$mapi.app.windowMax">
                     <i class="iconfont text-sm icon-max"></i>
                 </div>
                 <div class="inline-block w-6 h-6 leading-6 cursor-pointer hover:text-red-500"

@@ -97,10 +97,10 @@ const doRun = async () => {
             id: projectStore.current?.id
         }, true, [0, -6])
         logStore.pLogInfo('开始同步文件')
-        const files = await window.MAPI.fileListAll(`project/${projectStore.current?.id}`)
+        const files = await window.$mapi.file.listAll(`project/${projectStore.current?.id}`)
         for (let f of files) {
             logStore.pLogInfo(`同步文件 - ${f.path}`)
-            const content = await window.MAPI.fileRead(`project/${projectStore.current?.id}/${f.path}`)
+            const content = await window.$mapi.file.read(`project/${projectStore.current?.id}/${f.path}`)
             await device.connect?.send('project.fileWrite', {
                 id: projectStore.current?.id,
                 files: [

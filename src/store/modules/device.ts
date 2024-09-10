@@ -11,7 +11,7 @@ export const deviceStore = defineStore("device", {
     }),
     actions: {
         init() {
-            window.MAPI.storageGet("device", "records", [])
+            window.$mapi.storage.get("device", "records", [])
                 .then((records) => {
                     records.forEach((record: DeviceRecord) => {
                         record.status = EnumDeviceConnectStatus.WaitConnect
@@ -132,7 +132,7 @@ export const deviceStore = defineStore("device", {
                     port: record.port,
                 }
             })
-            window.MAPI.storageSet("device", "records", saveRecords)
+            window.$mapi.storage.set("device", "records", saveRecords)
         },
     }
 })

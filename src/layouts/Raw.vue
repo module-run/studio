@@ -6,7 +6,7 @@ const app = getCurrentInstance()
 const doQuit = () => {
     Dialog.confirm('确定退出吗？')
         .then(() => {
-            app?.proxy?.$mapi.appQuit()
+            window.$mapi.app.quit()
         })
 }
 

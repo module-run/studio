@@ -28,7 +28,7 @@ def block_2:
 export const ProjectService = {
 
     async parseFileAsJson<T>(project: ProjectRecord, path: string): Promise<T | null> {
-        let content = await window.MAPI.fileRead(`project/${project.id}/${path}`)
+        let content = await window.$mapi.file.read(`project/${project.id}/${path}`)
         if (!content) {
             return null
         }
@@ -44,7 +44,7 @@ export const ProjectService = {
     },
 
     async list(): Promise<ProjectRecord[]> {
-        const records = await window.MAPI.fileList('project')
+        const records = await window.$mapi.file.list('project')
         let projects: ProjectRecord[] = []
         for (let r of records.filter(r => r.isDirectory)) {
             let config = await this.parseFileAsJson<ProjectRecordConfig>({
@@ -64,17 +64,17 @@ export const ProjectService = {
         return projects
     },
     async add(project: ProjectRecord): Promise<ProjectRecord> {
-        await window.MAPI.fileMkdir(`project/${project.id}`)
+        await window.$mapi.file.mkdir(`project/${project.id}`)
         const projectConfig = pick(project, [
             'type', 'id', 'title',
             'createdAt', 'updatedAt',
             'defaultDevice',
             'pipDependencies',
         ]) as ProjectRecordConfig
-        await window.MAPI.fileWrite(`project/${project.id}/config.json`, this.stringifyJson(projectConfig))
-        await window.MAPI.fileMkdir(`project/${project.id}/module`)
-        await window.MAPI.fileWrite(`project/${project.id}/module/main/main.py`, CodeConstant.moduleMainPy)
-        await window.MAPI.fileWrite(`project/${project.id}/module/main/config.json`, this.stringifyJson({
+        await window.$mapi.file.write(`project/${project.id}/config.json`, this.stringifyJson(projectConfig))
+        await window.$mapi.file.mkdir(`project/${project.id}/module`)
+        await window.$mapi.file.write(`project/${project.id}/module/main/main.py`, CodeConstant.moduleMainPy)
+        await window.$mapi.file.write(`project/${project.id}/module/main/config.json`, this.stringifyJson({
             title: '模块',
             author: '',
             description: '',
@@ -83,9 +83,9 @@ export const ProjectService = {
             updatedAt: Date.now()
         } as ProjectModuleRecordConfig))
         if (project.type === EnumProjectType.Blockly) {
-            await window.MAPI.fileWrite(`project/${project.id}/module/main/blockly.json`, this.stringifyJson(CodeConstant.moduleMainBlocklyJson))
+            await window.$mapi.file.write(`project/${project.id}/module/main/blockly.json`, this.stringifyJson(CodeConstant.moduleMainBlocklyJson))
         }
-        await window.MAPI.fileMkdir(`project/${project.id}/extend`)
+        await window.$mapi.file.mkdir(`project/${project.id}/extend`)
         return project
     },
     async edit(project: ProjectRecord) {
@@ -95,13 +95,13 @@ export const ProjectService = {
             'defaultDevice',
             'pipDependencies',
         ]) as ProjectRecordConfig
-        await window.MAPI.fileWrite(`project/${project.id}/config.json`, this.stringifyJson(projectConfig))
+        await window.$mapi.file.write(`project/${project.id}/config.json`, this.stringifyJson(projectConfig))
     },
     async delete(project: ProjectRecord) {
-        await window.MAPI.fileDelete(`project/${project.id}`)
+        await window.$mapi.file.deletes(`project/${project.id}`)
     },
     async listModules(project: ProjectRecord): Promise<ProjectModuleRecord[]> {
-        const records = await window.MAPI.fileList(`project/${project.id}/module`)
+        const records = await window.$mapi.file.list(`project/${project.id}/module`)
         const modules: ProjectModuleRecord[] = []
         for (let r of records) {
             let config = await this.parseFileAsJson<ProjectModuleRecordConfig>(project, `module/${r.name}/config.json`)
@@ -119,7 +119,7 @@ export const ProjectService = {
     async addModule(project: ProjectRecord): Promise<ProjectModuleRecord> {
         let moduleIndex = 1;
         for (; ;) {
-            if (!await window.MAPI.fileExists(`project/${project.id}/module/module${moduleIndex}`)) {
+            if (!await window.$mapi.file.exists(`project/${project.id}/module/module${moduleIndex}`)) {
                 break
             }
             moduleIndex++
@@ -132,43 +132,43 @@ export const ProjectService = {
             createdAt: Date.now(),
             updatedAt: Date.now()
         } as ProjectModuleRecordConfig
-        await window.MAPI.fileMkdir(`project/${project.id}/module/module${moduleIndex}`)
-        await window.MAPI.fileWrite(`project/${project.id}/module/module${moduleIndex}/config.json`, this.stringifyJson(module))
-        await window.MAPI.fileWrite(`project/${project.id}/module/module${moduleIndex}/main.py`, CodeConstant.moduleMainPy)
+        await window.$mapi.file.mkdir(`project/${project.id}/module/module${moduleIndex}`)
+        await window.$mapi.file.write(`project/${project.id}/module/module${moduleIndex}/config.json`, this.stringifyJson(module))
+        await window.$mapi.file.write(`project/${project.id}/module/module${moduleIndex}/main.py`, CodeConstant.moduleMainPy)
         if (project.type === EnumProjectType.Blockly) {
-            await window.MAPI.fileWrite(`project/${project.id}/module/module${moduleIndex}/blockly.json`, this.stringifyJson(CodeConstant.moduleMainBlocklyJson))
+            await window.$mapi.file.write(`project/${project.id}/module/module${moduleIndex}/blockly.json`, this.stringifyJson(CodeConstant.moduleMainBlocklyJson))
         }
         return module as ProjectModuleRecord
     },
     async deleteModule(project: ProjectRecord, module: ProjectModuleRecord) {
-        await window.MAPI.fileDelete(`project/${project.id}/module/${module.name}`)
+        await window.$mapi.file.deletes(`project/${project.id}/module/${module.name}`)
     },
     async existsModule(project: ProjectRecord, name: string): Promise<boolean> {
-        return await window.MAPI.fileExists(`project/${project.id}/module/${name}`)
+        return await window.$mapi.file.exists(`project/${project.id}/module/${name}`)
     },
     async editModuleName(project: ProjectRecord, nameOld: string, nameNew: string) {
-        await window.MAPI.fileRename(`project/${project.id}/module/${nameOld}`, `project/${project.id}/module/${nameNew}`)
+        await window.$mapi.file.rename(`project/${project.id}/module/${nameOld}`, `project/${project.id}/module/${nameNew}`)
     },
     async editModule(project: ProjectRecord, module: ProjectModuleRecord) {
-        await window.MAPI.fileWrite(`project/${project.id}/module/${module.name}/config.json`, this.stringifyJson(module))
+        await window.$mapi.file.write(`project/${project.id}/module/${module.name}/config.json`, this.stringifyJson(module))
     },
     async loadModuleData(project: ProjectRecord, module: ProjectModuleRecord): Promise<ProjectModuleDataRecord> {
         const data = {} as ProjectModuleDataRecord
-        data.codePy = await window.MAPI.fileRead(`project/${project.id}/module/${module.name}/main.py`)
+        data.codePy = await window.$mapi.file.read(`project/${project.id}/module/${module.name}/main.py`)
         if (project.type === EnumProjectType.Blockly) {
-            data.blocklyJson = await window.MAPI.fileRead(`project/${project.id}/module/${module.name}/blockly.json`)
+            data.blocklyJson = await window.$mapi.file.read(`project/${project.id}/module/${module.name}/blockly.json`)
         }
         return data
     },
     async editModuleData(project: ProjectRecord, module: ProjectModuleRecord, data: ProjectModuleDataRecord) {
         // console.log('editModuleData', project, module, data)
-        await window.MAPI.fileWrite(`project/${project.id}/module/${module.name}/main.py`, data.codePy)
+        await window.$mapi.file.write(`project/${project.id}/module/${module.name}/main.py`, data.codePy)
         if (project.type === EnumProjectType.Blockly) {
-            await window.MAPI.fileWrite(`project/${project.id}/module/${module.name}/blockly.json`, data.blocklyJson)
+            await window.$mapi.file.write(`project/${project.id}/module/${module.name}/blockly.json`, data.blocklyJson)
         }
     },
     async listExtends(project: ProjectRecord): Promise<ProjectExtendRecord[]> {
-        const records = await window.MAPI.fileList(`project/${project.id}/extend`)
+        const records = await window.$mapi.file.list(`project/${project.id}/extend`)
         const extendList: ProjectExtendRecord[] = []
         for (let r of records) {
             let config = await this.parseFileAsJson<ProjectExtendRecordConfig>(project, `extend/${r.name}/config.json`)
@@ -186,10 +186,10 @@ export const ProjectService = {
     async addExtend(project: ProjectRecord, extend: ProjectExtendRecord, files: FileItem[]): Promise<undefined> {
         for (let f of files) {
             const content = EncodeUtil.base64Decode(f.contentBase64)
-            await window.MAPI.fileWrite(`project/${project.id}/extend/${extend.name}/${f.path}`, content)
+            await window.$mapi.file.write(`project/${project.id}/extend/${extend.name}/${f.path}`, content)
         }
     },
     async deleteExtend(project: ProjectRecord, extend: ProjectExtendRecord) {
-        await window.MAPI.fileDelete(`project/${project.id}/extend/${extend.name}`)
+        await window.$mapi.file.deletes(`project/${project.id}/extend/${extend.name}`)
     },
 }
