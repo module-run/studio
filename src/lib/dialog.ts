@@ -19,6 +19,7 @@ export const Dialog = {
                 titleAlign: 'start',
                 simple: false,
                 width: '25rem',
+                modalClass: 'arco-modal-confirm',
                 onOk: () => {
                     resolve();
                 },

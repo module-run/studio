@@ -45,8 +45,9 @@ onMounted(async () => {
         workspaceBottomSize.value = Math.ceil(100 * 40 / height)
     })
 })
-onBeforeUnmount(() => {
+onBeforeUnmount(async () => {
     UI.offResize(workspaceContainer?.value)
+    await projectStore.close(projectId.value)
 })
 
 const footTab = ref<string>('log')
@@ -266,16 +267,16 @@ const doModuleDelete = (key: string | number) => {
                         <a-tab-pane key="device" title="设备"></a-tab-pane>
                     </a-tabs>
                     <div class="absolute top-12 right-0 left-0 bottom-0 overflow-y-auto py-2">
-                        <div v-if="rightTab==='module'">
+                        <div v-show="rightTab==='module'">
                             <ProjectEditorModuleManager/>
                         </div>
-                        <div v-if="rightTab==='extend'">
+                        <div v-show="rightTab==='extend'">
                             <ProjectEditorExtendManager/>
                         </div>
-                        <div v-if="rightTab==='pip'">
+                        <div v-show="rightTab==='pip'">
                             <ProjectEditorPipManager/>
                         </div>
-                        <div v-if="rightTab==='device'">
+                        <div v-show="rightTab==='device'">
                             <ProjectEditorDeviceManager/>
                         </div>
                     </div>

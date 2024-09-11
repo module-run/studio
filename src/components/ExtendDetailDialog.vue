@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {computed, ref, watch} from "vue";
+import {computed, ref} from "vue";
 import {ProjectExtendRecord} from "../types/Project";
 import {ExtendStoreService} from "../services/ExtendStoreService";
 import {useProjectStore} from "../store/modules/project";
 import {Dialog} from "../lib/dialog";
+import HtmlViewer from "./common/HtmlViewer.vue";
 
 const projectStore = useProjectStore()
 const visible = ref(false)
@@ -151,7 +152,7 @@ defineExpose({
                     <a-tab-pane key="content" title="扩展介绍">
                         <m-loading v-if="loading"/>
                         <div v-else class="p-4">
-                            {{ extendData?.content }}
+                            <HtmlViewer :value="extendData?.content"/>
                         </div>
                     </a-tab-pane>
                     <a-tab-pane key="history" title="历史版本">
@@ -177,7 +178,7 @@ defineExpose({
                                         </div>
                                     </div>
                                     <div v-if="v._showContent" class="text-sm text-gray-500 py-2">
-                                        {{ v.content }}
+                                        <HtmlViewer :value="v.content"/>
                                     </div>
                                 </a-timeline-item>
                             </a-timeline>

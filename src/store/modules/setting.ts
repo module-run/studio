@@ -1,11 +1,11 @@
 import {defineStore} from "pinia"
 import store from "../index";
-import {ModuleRunConfig} from "../../config";
+import {AppConfig} from "../../config";
 
 export const settingStore = defineStore("setting", {
     state() {
         return {
-            version: ModuleRunConfig.version,
+            version: AppConfig.version,
         }
     },
     actions: {

@@ -6,6 +6,10 @@ import log from "./log/render";
 import app from "./app/render";
 import storage from "./storage";
 import file from "./file";
+import event from "./event/render";
+import ui from "./ui/render";
+import updater from "./updater/render";
+import statistics from "./statistics";
 
 export const MAPI = {
     init(env: typeof AppEnv = null) {
@@ -16,8 +20,14 @@ export const MAPI = {
                 log,
                 config,
                 storage,
-                file
+                file,
+                event,
+                ui,
+                updater,
+                statistics,
             })
+            event.init()
+            ui.init()
         } else {
             // init context
             AppEnv.appRoot = env.appRoot

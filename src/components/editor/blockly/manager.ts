@@ -3,7 +3,6 @@ import * as Blockly from "blockly/core";
 import {Workspace} from "blockly/core";
 import * as ZhHans from "blockly/msg/zh-hans";
 import type {BlocklyOptions} from "blockly/core/blockly_options";
-import {ContinuousFlyout, ContinuousMetrics, ContinuousToolbox} from '@blockly/continuous-toolbox';
 import {clone, debounce} from "lodash-es";
 import {BlocklyToolboxRecord} from "../../../types/Blockly";
 import {DefaultBlocklyToolboxes} from "./blocks";
@@ -32,7 +31,7 @@ export class BlocklyManager {
 
         let options = {
             theme: 'mTheme',
-            media: './node_modules/blockly/media/',
+            media: './../node_modules/blockly/media/',
             comments: true,
             collapse: true,
             disable: true,

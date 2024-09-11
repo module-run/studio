@@ -3,16 +3,35 @@ import log from "./log";
 import app from "./app";
 import storage from "./storage";
 import file from "./file";
+import event from "./event";
+import ui from "./ui";
+import updater from "./updater";
+import keys from "./keys/main";
+import statistics from "./statistics";
+import {globalShortcut} from "electron";
+
+const $mapi = {
+    app,
+    log,
+    config,
+    storage,
+    file,
+    event,
+    ui,
+    updater,
+    keys,
+    statistics
+}
 
 export const MAPI = {
     init() {
-        // expose context
-        const $mapi = {
-            app,
-            log,
-            config,
-            storage,
-            file,
-        }
+        $mapi.event.init()
+        $mapi.updater.init()
+    },
+    ready() {
+        $mapi.keys.ready()
+    },
+    destroy() {
+        $mapi.keys.destroy()
     }
 }

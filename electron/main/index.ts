@@ -1,4 +1,5 @@
-import {app, BrowserWindow, globalShortcut, ipcMain, shell} from 'electron'
+import {app, BrowserWindow, shell} from 'electron'
+import {optimizer} from '@electron-toolkit/utils'
 import {createRequire} from 'node:module'
 import {fileURLToPath} from 'node:url'
 import path from 'node:path'
@@ -8,11 +9,12 @@ import {isPackaged} from "../util/process";
 import {AppEnv, AppRuntime} from "../mapi/env";
 import {MAPI} from '../mapi/main';
 
-import {IPC} from "../lib/ipc";
 import {WindowConstant} from "../lib/constant";
+import {AppConfig} from "../../src/config";
 
 import {buildResolve} from "../util/path";
 import Log from "../mapi/log";
+import Event from "../mapi/event";
 
 const isMac = process.platform === 'darwin'
 const require = createRequire(import.meta.url)
@@ -99,7 +101,7 @@ function createWindow() {
     }
     AppRuntime.mainWindow = new BrowserWindow({
         show: !hasSplashWindow,
-        title: 'Main window',
+        title: AppConfig.name,
         ...(!isPackaged ? {icon} : {}),
         frame: false,
         center: true,
@@ -112,6 +114,8 @@ function createWindow() {
             preload,
             // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
             nodeIntegration: true,
+            webSecurity: false,
+            webviewTag: true
 
             // Consider using contextBridge.exposeInMainWorld
             // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
@@ -132,11 +136,12 @@ function createWindow() {
             setTimeout(() => {
                 AppRuntime.splashWindow?.close()
                 AppRuntime.splashWindow = null
-                // Open devTool if the app is not packaged
-                AppRuntime.mainWindow.webContents.openDevTools()
+                if (!isPackaged) {
+                    AppRuntime.mainWindow.webContents.openDevTools()
+                }
             }, 1000);
         }
-        IPC.send('APP_READY', AppEnv)
+        Event.send('APP_READY', AppEnv)
     })
 
     // Make all links open with the browser, not with the application
@@ -145,30 +150,19 @@ function createWindow() {
         return {action: 'deny'}
     })
     // AppRuntime.mainWindow.webContents.on('will-navigate', (event, url) => { }) #344
-
-    IPC.init(AppRuntime.mainWindow)
 }
 
 app.whenReady()
-    .then(createWindow)
     .then(() => {
-        globalShortcut.register('CommandOrControl+K', () => {
-            let focusedWindow = BrowserWindow.getFocusedWindow();
-            if (focusedWindow) {
-                if (focusedWindow.webContents.isDevToolsOpened()) {
-                    focusedWindow.webContents.closeDevTools();
-                } else {
-                    focusedWindow.webContents.openDevTools({
-                        mode: 'detach',
-                    });
-                }
-            }
-        });
+        MAPI.ready()
+        app.on('browser-window-created', (_, window) => {
+            optimizer.watchWindowShortcuts(window)
+        })
+        createWindow()
     })
 
 app.on('will-quit', () => {
-    // 注销所有快捷键
-    globalShortcut.unregisterAll();
+    MAPI.destroy()
 });
 
 app.on('window-all-closed', () => {

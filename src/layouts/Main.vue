@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import {getCurrentInstance, onMounted} from "vue";
+import {getCurrentInstance, onBeforeMount, onMounted, ref} from "vue";
 import PageNav from "./../components/PageNav.vue";
-import {ModuleRunConfig} from "./../config";
+import {AppConfig} from "./../config";
 import {Dialog} from "./../lib/dialog";
+
+const platform = ref('')
 
 const doQuit = () => {
     Dialog.confirm('确定退出吗？')
@@ -10,6 +12,10 @@ const doQuit = () => {
             window.$mapi.app.quit()
         })
 }
+
+onBeforeMount(() => {
+    platform.value = window.$mapi?.app?.platform()
+})
 
 onMounted(() => {
     // document.body.setAttribute('arco-theme', 'dark')
@@ -23,7 +29,7 @@ onMounted(() => {
                     <img src="/logo.svg" class="w-4 t-4"/>
                 </div>
                 <div class="p-2 flex-grow">
-                    {{ ModuleRunConfig.name }} v{{ ModuleRunConfig.version }}
+                    {{ AppConfig.name }} v{{ AppConfig.version }}
                 </div>
             </div>
             <div class="p-1 leading-4">

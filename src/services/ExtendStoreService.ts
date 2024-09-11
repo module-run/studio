@@ -1,15 +1,14 @@
 import {ProjectExtendRecord} from "../types/Project";
 import {FileItem} from "../types/File";
-import {useAppStore} from "../store/modules/app";
 import {EncodeUtil, TimeUtil, VersionUtil} from "../lib/util";
-
-const appStore = useAppStore()
 import LogoDefault from '../assets/image/extend.svg'
+import {MarkdownUtil} from "../lib/markdown";
 
 export const ExtendStoreService = {
 
     async extendsRoot(): Promise<string> {
-        return (await window.$mapi.file.absolutePath(appStore.appRoot as string)) + '/../extends'
+        const root = await window.$mapi.app.resourcePathResolve('extends')
+        return window.$mapi.file.absolutePath(root)
     },
 
     async extendsFiles(): Promise<FileItem[]> {
@@ -19,7 +18,7 @@ export const ExtendStoreService = {
     },
 
     async list(): Promise<ProjectExtendRecord[]> {
-        await this.getData('example', '1.1.0')
+        // await this.getData('example', '1.1.0')
         const extendsRoot = await this.extendsRoot()
         let results: any[] = []
         for (let f of await this.extendsFiles()) {
@@ -48,18 +47,26 @@ export const ExtendStoreService = {
             if (!await window.$mapi.file.exists(configPath)) {
                 continue
             }
+            const changelogPath = `${extendRoot}/${f.name}/changelog.md`
+            const changelogContent = await window.$mapi.file.read(changelogPath)
+            // 第一行为版本描述，剩余为版本内容
+            const changelogLines = (changelogContent || '').trim().split('\n')
+            const changelogContentSummary = changelogLines[0] || `版本 ${f.name}`
+            const changelogContentDetail = changelogLines.slice(1).join('\n') || '无'
             versions.push({
                 version: f.name,
                 time: TimeUtil.formatDate(f.lastModified),
-                summary: `版本描述 ${f.name}`,
-                content: '版本内容'.repeat(100),
+                summary: changelogContentSummary.trim(),
+                content: MarkdownUtil.toHtml(changelogContentDetail.trim()),
             })
         }
         versions.sort((a, b) => {
             return VersionUtil.compare(b.version, a.version)
         })
+        const contentPath = `${extendRoot}/content.md`
+        const contentContent = await window.$mapi.file.read(contentPath)
         const detailData = {}
-        detailData['content'] = '扩展详细介绍'.repeat(100)
+        detailData['content'] = MarkdownUtil.toHtml(contentContent)
         detailData['versions'] = versions
         return detailData
     },

@@ -84,6 +84,14 @@ export const projectStore = defineStore("project", {
             await this.activeModule()
             // console.log('open', this.current)
         },
+        async close(id: string) {
+            if (this.current && this.current.id === id) {
+                this.current = null
+                this.currentModules = []
+                this.currentModuleActive = undefined
+                this.currentExtends = []
+            }
+        },
         async delete(project: ProjectRecord) {
             await ProjectService.delete(project)
             await this.refresh()

@@ -30,4 +30,12 @@ const router = createRouter({
     routes
 })
 
+// watch router change
+router.beforeEach((to, from, next) => {
+    window.$mapi?.statistics?.tick('visit', {
+        path: to.path
+    })
+    next()
+})
+
 export default router

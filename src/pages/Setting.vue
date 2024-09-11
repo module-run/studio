@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import {onBeforeUnmount, onMounted, ref} from 'vue'
-import {ModuleRunConfig} from "../config";
+import {AppConfig} from "../config";
 import {Dialog} from "../lib/dialog";
-import {changeLocale, getLocale, listLocales} from './../lang/index'
+import {changeLocale, getLocale, listLocales} from '../lang'
+import SettingUpdaterButton from "../components/SettingUpdaterButton.vue";
 
 const basic = ref({
     locale: getLocale(),
     // projectRoot: 'D:/project',
 })
-
-const doVersionCheck = () => {
-    Dialog.tipSuccess('已经是最新版本')
-}
 const doUploadLog = () => {
     Dialog.confirm(
         '使用中若发生异常，如客户端闪退、卡死、任务创建或运行出错等问题，请上传日志帮助我们更好的定位和解决问题。',
@@ -91,15 +88,16 @@ const onLocaleChange = (value: string) => {
                     <div class="text-base font-bold mb-4">基础设置</div>
                     <div>
                         <a-form :model="basic" layout="vertical">
-<!--                            <a-form-item field="name" label="项目路径">-->
-<!--                                <a-input-->
-<!--                                    v-model="basic.projectRoot"-->
-<!--                                    readonly-->
-<!--                                    disabled-->
-<!--                                />-->
-<!--                            </a-form-item>-->
+                            <!--                            <a-form-item field="name" label="项目路径">-->
+                            <!--                                <a-input-->
+                            <!--                                    v-model="basic.projectRoot"-->
+                            <!--                                    readonly-->
+                            <!--                                    disabled-->
+                            <!--                                />-->
+                            <!--                            </a-form-item>-->
                             <a-form-item field="name" :label="$t('language')">
-                                <a-select :model-value="basic.locale" @change="onLocaleChange">
+                                <a-select :model-value="basic.locale"
+                                          @change="onLocaleChange as any">
                                     <a-option v-for="(l,lIndex) in locales"
                                               :key="l.name"
                                               :value="l.name">{{ l.label }}
@@ -116,7 +114,7 @@ const onLocaleChange = (value: string) => {
                         <div class="flex mb-3">
                             <div class="w-10">版本</div>
                             <div class="flex-grow">
-                                v{{ ModuleRunConfig.version }}
+                                v{{ AppConfig.version }}
                             </div>
                         </div>
                         <div class="flex mb-3">
@@ -128,11 +126,11 @@ const onLocaleChange = (value: string) => {
                         <div class="flex mb-3">
                             <div class="w-10">反馈</div>
                             <div class="flex-grow">
-                                <a href="https://extendrun.com" target="_blank"
+                                <a :href="AppConfig.website" target="_blank"
                                    class="text-link">
-                                    问题反馈及需求建议
+                                    问题反馈/需求建议
                                 </a>
-                                <a href="javascript:;"
+                                <a v-if="0" href="javascript:;"
                                    @click="doUploadLog"
                                    class="text-link">
                                     上传日志
@@ -142,17 +140,17 @@ const onLocaleChange = (value: string) => {
                         <div class="flex mb-3">
                             <div class="w-10">官网</div>
                             <div class="flex-grow">
-                                <a href="https://extendrun.com" target="_blank"
+                                <a :href="AppConfig.website" target="_blank"
                                    class="text-link">
-                                    https://extendrun.com
+                                    {{ AppConfig.website }}
                                 </a>
-                                <a-button @click="doVersionCheck()">
-                                    检测更新
-                                </a-button>
+                                <div class="inline-block ml-3">
+                                    <SettingUpdaterButton/>
+                                </div>
                             </div>
                         </div>
                         <div class="text-gray-400">
-                            &copy; 2024 {{ ModuleRunConfig.name }}
+                            &copy; 2024 {{ AppConfig.name }}
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,9 @@
 declare interface Window {
     $mapi: {
         app: {
+            resourcePathResolve: (filePath: string) => Promise<string>,
+            extraPathResolve: (filePath: string) => Promise<string>,
+            platform: () => string,
             quit: () => Promise<void>,
             windowMin: () => Promise<void>,
             windowMax: () => Promise<void>,
@@ -21,7 +24,7 @@ declare interface Window {
             set: (group: string, key: string, value: any) => Promise<void>,
         },
         file: {
-            absolutePath: (path: string) => Promise<string>,
+            absolutePath: (path: string) => string,
             exists: (path: string) => Promise<boolean>,
             isDirectory: (path: string) => Promise<boolean>,
             mkdir: (path: string) => Promise<void>,
@@ -31,6 +34,14 @@ declare interface Window {
             read: (path: string) => Promise<any>,
             deletes: (path: string) => Promise<void>,
             rename: (pathOld: string, pathNew: string) => Promise<void>,
+        },
+        updater: {
+            checkForUpdate: (callback: (type: 'error' | 'checking' | 'available' | 'notAvailable', data: any) => void) => Promise<void>,
+            downloadUpdate: (callback: (type: 'error' | 'progress' | 'downloaded', data: any) => void) => Promise<void>,
+            quitAndInstall: () => Promise<void>,
+        },
+        statistics: {
+            tick: (name: string, data: any = null) => Promise<void>,
         }
     }
 }

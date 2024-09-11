@@ -6,25 +6,27 @@ import pkg from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig(({command}) => {
+
     fs.rmSync('dist-electron', {recursive: true, force: true})
 
     const isServe = command === 'serve'
     const isBuild = command === 'build'
     const sourcemap = isServe || !!process.env.VSCODE_DEBUG
+    const minify = isBuild && !process.env.VSCODE_DEBUG
 
     return {
         plugins: [
             vue({
-                // template: {
-                //     compilerOptions: {
-                //         isCustomElement: (tag) => {
-                //             if(tag.startsWith('a-')){
-                //                 return true
-                //             }
-                //             return false
-                //         },
-                //     },
-                // }
+                template: {
+                    compilerOptions: {
+                        isCustomElement: (tag) => {
+                            if (['webview'].includes(tag)) {
+                                return true
+                            }
+                            return false
+                        },
+                    },
+                },
             }),
             electron({
                 main: {
@@ -40,7 +42,7 @@ export default defineConfig(({command}) => {
                     vite: {
                         build: {
                             sourcemap,
-                            minify: isBuild,
+                            minify: minify,
                             outDir: 'dist-electron/main',
                             rollupOptions: {
                                 // Some third-party Node.js libraries may not be built correctly by Vite, especially `C/C++` addons,
@@ -59,7 +61,7 @@ export default defineConfig(({command}) => {
                     vite: {
                         build: {
                             sourcemap: sourcemap ? 'inline' : undefined, // #332
-                            minify: isBuild,
+                            minify: minify,
                             outDir: 'dist-electron/preload',
                             rollupOptions: {
                                 external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
@@ -73,6 +75,12 @@ export default defineConfig(({command}) => {
                 renderer: {},
             }),
         ],
+        build: {
+            sourcemap: sourcemap,
+            commonjsOptions: {
+                include: ['blockly/**/*', 'node_modules/**/*']
+            }
+        },
         server: process.env.VSCODE_DEBUG && (() => {
             const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
             return {

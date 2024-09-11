@@ -33,10 +33,10 @@ export const listLocales = () => {
             name: 'zh',
             label: '简体中文',
         },
-        {
-            name: 'en',
-            label: 'English',
-        }
+        // {
+        //     name: 'en',
+        //     label: 'English',
+        // }
     ]
     list.forEach((item) => {
         item.active = i18n.global.locale.value === item.name

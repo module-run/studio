@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {nextTick, onMounted, ref, watch} from "vue";
 import {ProjectPipRecord} from "../types/Project";
 import {Dialog} from "../lib/dialog";
 import {useProjectStore} from "../store/modules/project";
@@ -15,6 +15,8 @@ const detailData = ref({
     content: '',
     orgUrl: '',
 })
+const webviewVisible = ref(false)
+const webviewPreload = ref('')
 const show = (pip: ProjectPipRecord) => {
     detailData.value.name = pip.name
     detailData.value.version = pip.version
@@ -23,6 +25,26 @@ const show = (pip: ProjectPipRecord) => {
     detailData.value.desc = pip.name + ' ' + pip.version
     detailData.value.content = pip.name + ' ' + pip.version + ' ' + 'pip详细介绍'
     visible.value = true
+    webviewVisible.value = false
+    nextTick(() => {
+        const webview = document.getElementById("pipDetailWebview") as any;
+        if (webview) {
+            webview.addEventListener('dom-ready', () => {
+                console.log('dom-ready')
+                let css: string[] = []
+                css.push(`header{display:none !important;}`)
+                css.push(`footer{display:none !important;}`)
+                css.push(`.mobile-search{display:none !important;}`)
+                css.push(`#content .banner{display:none !important;}`)
+                css.push(`#content .horizontal-section{display:none !important;}`)
+                css.push(`#content nav{display:none !important;}`)
+                css.push(`.language-switcher{display:none !important;}`)
+                css.push(`.sponsors{display:none !important;}`)
+                webview.insertCSS(css.join(''))
+                webviewVisible.value = true
+            })
+        }
+    })
 }
 const doDelete = () => {
     Dialog.confirm('确定删除吗？')
@@ -35,6 +57,15 @@ const doDelete = () => {
             visible.value = false
         })
 }
+watch(visible, (v) => {
+    if (!v) {
+        webviewVisible.value = false
+    }
+})
+onMounted(async () => {
+    const p = await window.$mapi.app.extraPathResolve('common/preload/pip.js')
+    webviewPreload.value = `file:${p}`
+})
 defineExpose({
     show
 })
@@ -57,9 +88,10 @@ defineExpose({
                 <div>
                     <div class="text-lg font-bold mb-4">
                         {{ detailData.title }}
-                        <a-tag>{{ detailData.name }}</a-tag>
+                        <a-tag class="mr-1">{{ detailData.name }}</a-tag>
+                        <a-tag>v{{ detailData.version }}</a-tag>
                     </div>
-                    <div class="mb-4">
+                    <div v-if="0" class="mb-4">
                         {{ detailData.desc }}
                     </div>
                     <div>
@@ -79,8 +111,16 @@ defineExpose({
             <div class="mt-4">
                 <a-tabs default-active-key="content">
                     <a-tab-pane key="content" title="pip介绍">
-                        <div class="p-4">
-                            {{ detailData.content }}
+                        <div v-if="!!detailData.orgUrl" class="bg-gray-100 relative">
+                            <webview id="pipDetailWebview"
+                                     disablewebsecurity
+                                     :src="detailData.orgUrl"
+                                     :preload="webviewPreload"
+                                     :style="{visibility:webviewVisible?'visible':'hidden'}"
+                                     style="width:100%;height:40vh;border:none;"></webview>
+                            <div v-if="!webviewVisible" class="absolute inset-0">
+                                <m-loading/>
+                            </div>
                         </div>
                     </a-tab-pane>
                 </a-tabs>

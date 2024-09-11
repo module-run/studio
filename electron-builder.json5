@@ -2,18 +2,12 @@
 {
     "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
     "appId": "ModuleRun",
-    "asar": false,
+    "asar": true,
     "npmRebuild": true,
-    "publish": {
-        "provider": "github",
-        "owner": "modulerun-org",
-        "repo": "modulerun-studio",
-        "updaterCacheDirName": "modulerun-studio-updater"
-    },
     "productName": "ModuleRun",
     "directories": {
         "output": "dist-release",
-        "buildResources": "electron/resources/build",
+        "buildResources": "electron/resources/build"
     },
     "files": [
         "dist",
@@ -23,27 +17,48 @@
         "target": [
             {
                 "target": "nsis",
-                "arch": ["x64", "arm64"]
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
             },
             {
                 "target": "zip",
-                "arch": ["x64", "arm64"]
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
             },
             {
                 "target": "portable",
-                "arch": ["x64", "arm64"]
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
             },
             {
                 "target": "appx",
-                "arch": ["x64", "arm64"]
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
             }
         ],
         "artifactName": "${productName}-${version}-win-${arch}.${ext}",
-        "extraResources": {
-            "from": "electron/resources/extra",
-            "to": "extra",
-            "filter": ["common", "win"]
-        }
+        "extraResources": [
+            {
+                "from": "extends",
+                "to": "extends",
+            },
+            {
+                "from": "electron/resources/extra",
+                "to": "extra",
+                "filter": [
+                    "common",
+                    "win"
+                ]
+            }
+        ]
     },
     "nsis": {
         "artifactName": "${productName}-${version}-win-setup-${arch}.${ext}",
@@ -62,26 +77,47 @@
         "identityName": "modulerun.Studio",
         "publisher": "CN=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX",
         "publisherDisplayName": "modulerun",
-        "languages": ["zh-CN", "en-US", "zh-TW"]
+        "languages": [
+            "zh-CN",
+            "en-US",
+            "zh-TW"
+        ]
     },
     "mac": {
         "icon": "logo.icns",
         "target": [
             {
                 "target": "dmg",
-                "arch": ["universal", "x64", "arm64"]
+                "arch": [
+                    "universal",
+                    "x64",
+                    "arm64"
+                ]
             },
             {
                 "target": "zip",
-                "arch": ["universal", "x64", "arm64"]
+                "arch": [
+                    "universal",
+                    "x64",
+                    "arm64"
+                ]
             }
         ],
         "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
-        "extraResources": {
-            "from": "electron/resources/extra",
-            "to": "extra",
-            "filter": ["common", "mac"]
-        },
+        "extraResources": [
+            {
+                "from": "extends",
+                "to": "extends"
+            },
+            {
+                "from": "electron/resources/extra",
+                "to": "extra",
+                "filter": [
+                    "common",
+                    "mac"
+                ]
+            }
+        ],
         "x64ArchFiles": "Contents/Resources/extra/**/*",
         "entitlementsInherit": "entitlements.mac.plist",
         "extendInfo": {
@@ -90,29 +126,44 @@
         },
         "type": "development",
         "notarize": false,
-        "darkModeSupport": true,
+        "darkModeSupport": false,
         "hardenedRuntime": false
     },
     "linux": {
         "icon": "logo.icns",
         "desktop": "logo",
-        "maintainer": "nilflow@163.com",
+        "maintainer": "modulerun",
         "category": "Utility",
         "target": [
             {
                 "target": "AppImage",
-                "arch": ["x64", "arm64"]
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
             },
             {
                 "target": "deb",
-                "arch": ["x64", "arm64"]
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
             }
         ],
         "artifactName": "${productName}-${version}-linux-${arch}.${ext}",
-        "extraResources": {
-            "from": "electron/resources/extra",
-            "to": "extra",
-            "filter": ["common", "linux"]
-        }
+        "extraResources": [
+            {
+                "from": "extends",
+                "to": "extends",
+            },
+            {
+                "from": "electron/resources/extra",
+                "to": "extra",
+                "filter": [
+                    "common",
+                    "linux"
+                ]
+            }
+        ]
     }
 }

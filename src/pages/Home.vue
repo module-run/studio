@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ModuleRunConfig} from "../config";
+import {AppConfig} from "../config";
 import {onMounted, ref} from "vue";
 import ExtendDetailDialog from "../components/ExtendDetailDialog.vue";
 import ProjectCreateGuide from "../components/ProjectCreateGuide.vue";
@@ -20,7 +20,7 @@ onMounted(async () => {
 <template>
     <div class="page-narrow-container p-8">
         <div class="text-3xl font-bold mb-4">
-            您好，欢迎使用 {{ ModuleRunConfig.name }} ！
+            您好，欢迎使用 {{ AppConfig.name }} ！
         </div>
         <div class="flex">
             <div class="flex-grow">
@@ -59,13 +59,13 @@ onMounted(async () => {
                         </div>
                         <div class="block w-9 h-1 bg-primary rounded-full"></div>
                     </div>
-                    <a href="https://github.com"
+                    <a :href="AppConfig.websiteGithub"
                        target="_blank"
                        class="bg-white rounded-lg p-2 flex items-center mb-3 hover:shadow-lg">
                         <img src="./../assets/image/github.svg" class="w-12 h-12 mr-2"/>
                         <div class="flex-grow">Github 开源支持</div>
                     </a>
-                    <a href="https://gitee.com"
+                    <a :href="AppConfig.websiteGitee"
                        target="_blank"
                        class="bg-white rounded-lg p-2 flex items-center hover:shadow-lg">
                         <img src="./../assets/image/gitee.svg" class="w-12 h-12 mr-2"/>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {ModuleRunConfig} from "../config";
+import {AppConfig} from "../config";
 import {onBeforeMount} from "vue";
 import Router from "../router";
 
@@ -22,7 +22,7 @@ const doLogin = () => {
                 </div>
                 <div>
                     <div class="font-bold text-lg">
-                        {{ ModuleRunConfig.name }}
+                        {{ AppConfig.name }}
                     </div>
                     <div class="text-xs text-gray-400">
                         让树莓派开发简单
