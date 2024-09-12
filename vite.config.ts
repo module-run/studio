@@ -3,6 +3,8 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import electron from 'vite-plugin-electron/simple'
 import pkg from './package.json'
+import path from "node:path";
+import {AppConfig} from "./src/config";
 
 // https://vitejs.dev/config/
 export default defineConfig(({command}) => {
@@ -28,6 +30,23 @@ export default defineConfig(({command}) => {
                     },
                 },
             }),
+            {
+                name: 'process-variables',
+                closeBundle() {
+                    const files = [
+                        'splash.html', 'index.html'
+                    ];
+                    files.forEach(f => {
+                        const p = path.resolve(__dirname, 'dist', f);
+                        let html = fs.readFileSync(p, 'utf-8');
+                        for (const key in AppConfig) {
+                            html = html.replace(new RegExp(`%${key}%`, 'g'), AppConfig[key]);
+                        }
+                        fs.writeFileSync(p, html, 'utf-8');
+                    })
+
+                },
+            },
             electron({
                 main: {
                     // Shortcut of `build.lib.entry`

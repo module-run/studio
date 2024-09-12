@@ -1,6 +1,8 @@
+import packageJson from '../package.json';
+
 export const AppConfig = {
     name: 'ModuleRun',
-    version: '0.0.1',
+    version: packageJson.version,
     website: 'https://module-run.com',
     websiteGithub: 'https://github.com/module-run/studio',
     websiteGitee: 'https://gitee.com/module-run/studio',
