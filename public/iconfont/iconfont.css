@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4612660 */
-  src: url('iconfont.woff2?t=1725954136252') format('woff2'),
-       url('iconfont.woff?t=1725954136252') format('woff'),
-       url('iconfont.ttf?t=1725954136252') format('truetype');
+  src: url('iconfont.woff2?t=1726849719451') format('woff2'),
+       url('iconfont.woff?t=1726849719451') format('woff'),
+       url('iconfont.ttf?t=1726849719451') format('truetype');
 }
 
 .iconfont {
@@ -47,26 +47,6 @@
 
 .icon-gitee:before {
   content: "\e601";
-}
-
-.icon-control:before {
-  content: "\e6d6";
-}
-
-.icon-shengyin:before {
-  content: "\e8b8";
-}
-
-.icon-assessment-blue:before {
-  content: "\e600";
-}
-
-.icon-shijianpeizhi:before {
-  content: "\e603";
-}
-
-.icon-bianliang:before {
-  content: "\ee48";
 }
 
 .icon-scratch:before {

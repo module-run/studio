@@ -69,41 +69,6 @@
       "unicode_decimal": 58881
     },
     {
-      "icon_id": "3392506",
-      "name": "运动控制",
-      "font_class": "control",
-      "unicode": "e6d6",
-      "unicode_decimal": 59094
-    },
-    {
-      "icon_id": "11372700",
-      "name": "声音",
-      "font_class": "shengyin",
-      "unicode": "e8b8",
-      "unicode_decimal": 59576
-    },
-    {
-      "icon_id": "14712516",
-      "name": "计算机 算数",
-      "font_class": "assessment-blue",
-      "unicode": "e600",
-      "unicode_decimal": 58880
-    },
-    {
-      "icon_id": "22264571",
-      "name": "事件配置",
-      "font_class": "shijianpeizhi",
-      "unicode": "e603",
-      "unicode_decimal": 58883
-    },
-    {
-      "icon_id": "26506746",
-      "name": "变量",
-      "font_class": "bianliang",
-      "unicode": "ee48",
-      "unicode_decimal": 61000
-    },
-    {
       "icon_id": "11400007",
       "name": "scratch",
       "font_class": "scratch",
