@@ -62,15 +62,15 @@ const onLocaleChange = (value: string) => {
 <template>
     <div class="flex">
         <div class="p-8 w-56 flex-shrink-0 border-r border-solid border-gray-100">
-            <div class="p-2 rounded-lg mr-2 mb-4 cursor-pointer"
-                 :class="{'bg-gray-100':activeSection==='basic'}"
-                 @click="doScrollTo('basic')"
-            >
-                <div class="text-base">
-                    <icon-settings/>
-                    基础设置
-                </div>
-            </div>
+<!--            <div class="p-2 rounded-lg mr-2 mb-4 cursor-pointer"-->
+<!--                 :class="{'bg-gray-100':activeSection==='basic'}"-->
+<!--                 @click="doScrollTo('basic')"-->
+<!--            >-->
+<!--                <div class="text-base">-->
+<!--                    <icon-settings/>-->
+<!--                    基础设置-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="p-2 rounded-lg mr-2 mb-4 cursor-pointer"
                  :class="{'bg-gray-100':activeSection==='about'}"
                  @click="doScrollTo('about')">
@@ -85,7 +85,7 @@ const onLocaleChange = (value: string) => {
                  class="overflow-y-auto p-8 leading-8"
                  style="height:calc(100vh - var(--window-header-height));">
                 <div data-section="basic" class="scroll-mt-4">
-                    <div class="text-base font-bold mb-4">基础设置</div>
+<!--                    <div class="text-base font-bold mb-4">基础设置</div>-->
                     <div>
                         <a-form :model="basic" layout="vertical">
                             <!--                            <a-form-item field="name" label="项目路径">-->
@@ -95,15 +95,15 @@ const onLocaleChange = (value: string) => {
                             <!--                                    disabled-->
                             <!--                                />-->
                             <!--                            </a-form-item>-->
-                            <a-form-item field="name" :label="$t('language')">
-                                <a-select :model-value="basic.locale"
-                                          @change="onLocaleChange as any">
-                                    <a-option v-for="(l,lIndex) in locales"
-                                              :key="l.name"
-                                              :value="l.name">{{ l.label }}
-                                    </a-option>
-                                </a-select>
-                            </a-form-item>
+<!--                            <a-form-item field="name" :label="$t('language')">-->
+<!--                                <a-select :model-value="basic.locale"-->
+<!--                                          @change="onLocaleChange as any">-->
+<!--                                    <a-option v-for="(l,lIndex) in locales"-->
+<!--                                              :key="l.name"-->
+<!--                                              :value="l.name">{{ l.label }}-->
+<!--                                    </a-option>-->
+<!--                                </a-select>-->
+<!--                            </a-form-item>-->
                         </a-form>
                     </div>
                 </div>
@@ -144,9 +144,9 @@ const onLocaleChange = (value: string) => {
                                    class="text-link">
                                     {{ AppConfig.website }}
                                 </a>
-                                <div class="inline-block ml-3">
-                                    <SettingUpdaterButton/>
-                                </div>
+<!--                                <div class="inline-block ml-3">-->
+<!--                                    <SettingUpdaterButton/>-->
+<!--                                </div>-->
                             </div>
                         </div>
                         <div class="text-gray-400">

@@ -72,9 +72,9 @@ onMounted(async () => {
                         <div class="flex-grow">Gitee 开源支持</div>
                     </a>
                 </div>
-                <div class="rounded-lg bg-gray-100 py-24 text-gray-500 text-center">
-                    广告位
-                </div>
+<!--                <div class="rounded-lg bg-gray-100 py-24 text-gray-500 text-center">-->
+<!--                    广告位-->
+<!--                </div>-->
             </div>
         </div>
     </div>
